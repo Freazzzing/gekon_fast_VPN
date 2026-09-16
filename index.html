@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GEKON — meta workspace · VPN-gekon</title>
+  <meta name="description" content="GEKON — единый meta-репозиторий продукта: SoloBot v6, Solo-Brick ЛК, сайт gekon.tech, wiki, Sub-Bridge, infra и TG-прокси." />
+  <meta name="theme-color" content="#0a0f1f" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0f1f;
+      --bg-elev: #111827;
+      --fg: #f4f7fb;
+      --muted: #9aa8bc;
+      --line: rgba(255, 255, 255, 0.1);
+      --green: #2fd6a1;
+      --green-dim: rgba(47, 214, 161, 0.14);
+      --cyan: #45c7e8;
+      --ink: #07101c;
+      --glow: rgba(47, 214, 161, 0.35);
+      --radius: 18px;
+      --max: 1120px;
+      --font: "Sora", ui-sans-serif, system-ui, sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    .bg-orbit {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(ellipse 80% 55% at 15% -10%, rgba(47, 214, 161, 0.22), transparent 55%),
+        radial-gradient(ellipse 70% 50% at 90% 5%, rgba(69, 199, 232, 0.16), transparent 50%),
+        radial-gradient(ellipse 60% 40% at 50% 110%, rgba(47, 214, 161, 0.08), transparent 60%),
+        linear-gradient(180deg, #070b16 0%, #0a0f1f 40%, #0c1424 100%);
+    }
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse 70% 55% at 50% 20%, black, transparent 75%);
+      pointer-events: none;
+    }
+    .speed-line {
+      position: fixed;
+      top: 18%;
+      left: -20%;
+      width: 40%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--green), transparent);
+      opacity: 0.35;
+      animation: speed-line 4.5s ease-in-out infinite;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(28px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes float-y {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+    @keyframes speed-line {
+      0% { transform: translateX(0); opacity: 0; }
+      20% { opacity: 0.45; }
+      100% { transform: translateX(280%); opacity: 0; }
+    }
+    @keyframes pulse-ring {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(47, 214, 161, 0.35); }
+      50% { box-shadow: 0 0 0 12px rgba(47, 214, 161, 0); }
+    }
+
+    .wrap {
+      width: min(100% - 2rem, var(--max));
+      margin-inline: auto;
+    }
+
+    /* NAV */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(14px);
+      background: rgba(10, 15, 31, 0.72);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s ease, background 0.3s ease;
+    }
+    .nav.scrolled { border-bottom-color: var(--line); }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.9rem 0;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .nav-brand img {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.25rem;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    .nav-links a:hover { color: var(--fg); }
+    .nav-cta {
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.55rem 0.95rem;
+      border-radius: 999px;
+      border: 1px solid rgba(47, 214, 161, 0.45);
+      background: var(--green-dim);
+      color: var(--green);
+    }
+    .nav-cta:hover { background: rgba(47, 214, 161, 0.22); }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      min-height: min(100svh, 860px);
+      display: flex;
+      align-items: flex-end;
+      padding: 7.5rem 0 4.5rem;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: auto -10% -20% 30%;
+      height: 70%;
+      background:
+        radial-gradient(circle at 40% 40%, rgba(47, 214, 161, 0.18), transparent 45%),
+        radial-gradient(circle at 70% 60%, rgba(69, 199, 232, 0.12), transparent 40%);
+      filter: blur(8px);
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      animation: fade-up 0.8s ease both;
+    }
+    .hero-mark {
+      width: min(100%, 280px);
+      margin-bottom: 1.6rem;
+      filter: drop-shadow(0 0 28px rgba(47, 214, 161, 0.35));
+      animation: float-y 7s ease-in-out infinite;
+    }
+    .hero-mark img { width: 100%; height: auto; }
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 4.1rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 1.1rem;
+    }
+    .hero h1 span {
+      background: linear-gradient(120deg, var(--green), var(--cyan));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero-lead {
+      max-width: 34rem;
+      font-size: clamp(1rem, 2.2vw, 1.2rem);
+      color: var(--muted);
+      margin-bottom: 1.8rem;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 2.2rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.85rem 1.25rem;
+      border-radius: 14px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--green), #1fb8c9);
+      color: var(--ink);
+      box-shadow: 0 10px 40px rgba(47, 214, 161, 0.25);
+      animation: pulse-ring 2.8s ease-in-out infinite;
+    }
+    .btn-ghost {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+      color: var(--fg);
+    }
+    .btn-ghost:hover { border-color: rgba(47, 214, 161, 0.4); }
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem 1.4rem;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .hero-meta strong {
+      color: var(--green);
+      font-weight: 600;
+    }
+
+    /* SECTIONS */
+    section { padding: 4.5rem 0; }
+    .section-head {
+      margin-bottom: 2rem;
+      max-width: 40rem;
+    }
+    .eyebrow {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 0.7rem;
+    }
+    h2 {
+      font-size: clamp(1.7rem, 3.5vw, 2.35rem);
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 0.7rem;
+    }
+    .section-head p { color: var(--muted); }
+
+    /* PRODUCT STRIP */
+    .product-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.85rem;
+    }
+    .product-tile {
+      position: relative;
+      padding: 1.2rem 1.15rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(160deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+      min-height: 148px;
+      overflow: hidden;
+      transition: border-color 0.25s ease, transform 0.25s ease;
+    }
+    .product-tile:hover {
+      border-color: rgba(47, 214, 161, 0.45);
+      transform: translateY(-3px);
+    }
+    .product-tile::after {
+      content: "";
+      position: absolute;
+      inset: auto -20% -40% 40%;
+      height: 90%;
+      background: radial-gradient(circle, rgba(47, 214, 161, 0.16), transparent 65%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .product-tile:hover::after { opacity: 1; }
+    .product-tile .kicker {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--cyan);
+      margin-bottom: 0.55rem;
+    }
+    .product-tile h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.4rem;
+    }
+    .product-tile p {
+      font-size: 0.86rem;
+      color: var(--muted);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* STACK */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 1rem;
+    }
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: calc(var(--radius) + 4px);
+      background: rgba(17, 24, 39, 0.55);
+      padding: 1.4rem;
+    }
+    .stack-list { display: grid; gap: 0.75rem; }
+    .stack-item {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      gap: 0.85rem;
+      align-items: start;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .stack-item:last-child { border-bottom: 0; padding-bottom: 0; }
+    .stack-item:first-child { padding-top: 0; }
+    .stack-tag {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--green);
+      background: var(--green-dim);
+      border: 1px solid rgba(47, 214, 161, 0.25);
+      border-radius: 8px;
+      padding: 0.35rem 0.45rem;
+      text-align: center;
+      align-self: start;
+    }
+    .stack-item h3 { font-size: 0.98rem; margin-bottom: 0.2rem; }
+    .stack-item p { font-size: 0.84rem; color: var(--muted); }
+    .stack-item code {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--cyan);
+    }
+
+    .flow {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      height: 100%;
+    }
+    .flow-step {
+      flex: 1;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1rem;
+      background: rgba(255,255,255,0.02);
+    }
+    .flow-step .n {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--green);
+      margin-bottom: 0.35rem;
+    }
+    .flow-step h3 { font-size: 0.95rem; margin-bottom: 0.25rem; }
+    .flow-step p { font-size: 0.82rem; color: var(--muted); }
+
+    /* ARCH */
+    .arch {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.85rem;
+    }
+    .arch-col {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1.2rem;
+      background: rgba(255,255,255,0.02);
+    }
+    .arch-col h3 {
+      font-size: 0.95rem;
+      margin-bottom: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 12px var(--glow);
+    }
+    .dot.cyan { background: var(--cyan); box-shadow: 0 0 12px rgba(69,199,232,0.45); }
+    .dot.amber { background: #f0b429; box-shadow: 0 0 12px rgba(240,180,41,0.4); }
+    .arch-col ul {
+      list-style: none;
+      display: grid;
+      gap: 0.55rem;
+    }
+    .arch-col li {
+      font-size: 0.86rem;
+      color: var(--muted);
+      padding-left: 0.85rem;
+      position: relative;
+    }
+    .arch-col li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.28);
+    }
+    .arch-col strong { color: var(--fg); font-weight: 600; }
+
+    /* REPOS */
+    .repos {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
+    .repo {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      padding: 1.05rem 1.1rem;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(17, 24, 39, 0.45);
+      transition: border-color 0.2s ease;
+    }
+    .repo:hover { border-color: rgba(69, 199, 232, 0.4); }
+    .repo-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.75rem;
+      align-items: baseline;
+    }
+    .repo h3 { font-size: 0.95rem; }
+    .repo .path {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--muted);
+    }
+    .repo p { font-size: 0.84rem; color: var(--muted); }
+
+    /* TIERS */
+    .tiers {
+      display: grid;
+      gap: 0.55rem;
+    }
+    .tier {
+      display: grid;
+      grid-template-columns: 3.2rem 1fr auto;
+      gap: 1rem;
+      align-items: center;
+      padding: 0.95rem 1.1rem;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.02);
+    }
+    .tier-id {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--green);
+    }
+    .tier h3 { font-size: 0.95rem; }
+    .tier p { font-size: 0.8rem; color: var(--muted); }
+    .tier .hint {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--cyan);
+      white-space: nowrap;
+    }
+
+    /* LINKS / FOOTER */
+    .links-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+    }
+    .link-chip {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      padding: 1.1rem;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: linear-gradient(160deg, rgba(47,214,161,0.08), transparent 70%);
+      min-height: 110px;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .link-chip:hover {
+      transform: translateY(-2px);
+      border-color: rgba(47, 214, 161, 0.4);
+    }
+    .link-chip span {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--green);
+    }
+    .link-chip strong { font-size: 0.98rem; }
+    .link-chip em {
+      font-style: normal;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 2.2rem 0 3rem;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+    }
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      color: var(--fg);
+      font-weight: 700;
+    }
+    .footer-brand img {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 960px) {
+      .product-strip,
+      .arch,
+      .links-row { grid-template-columns: repeat(2, 1fr); }
+      .stack-grid,
+      .repos { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .tier { grid-template-columns: 3rem 1fr; }
+      .tier .hint { display: none; }
+    }
+    @media (max-width: 640px) {
+      .product-strip,
+      .arch,
+      .links-row { grid-template-columns: 1fr; }
+      .hero { padding-top: 6rem; min-height: auto; }
+      .stack-item { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-orbit" aria-hidden="true"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="speed-line" aria-hidden="true"></div>
+
+  <header class="nav" id="nav">
+    <div class="wrap nav-inner">
+      <a class="nav-brand" href="#top">
+        <img src="assets/gekon-logo.svg" alt="" width="36" height="36" />
+        <span>GEKON</span>
+      </a>
+      <nav class="nav-links" aria-label="Разделы">
+        <a href="#product">Продукт</a>
+        <a href="#stack">Стек</a>
+        <a href="#arch">Архитектура</a>
+        <a href="#repos">Репозитории</a>
+        <a href="#map">Карта</a>
+      </nav>
+      <a class="nav-cta" href="https://gekon.tech" target="_blank" rel="noopener">gekon.tech</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-inner">
+        <div class="hero-mark">
+          <img src="assets/gekon-hero-logo.svg" alt="GEKON" width="280" height="147" />
+        </div>
+        <h1>Meta workspace<br /><span>всего продукта</span></h1>
+        <p class="hero-lead">
+          Единая рабочая копия MANUAL / PROD / INFRA: SoloBot v6, Solo-Brick, сайт, wiki,
+          Sub-Bridge, Ansible и TG-прокси — с каноном на Forgejo Gekon.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://gekon.tech" target="_blank" rel="noopener">Открыть продукт</a>
+          <a class="btn btn-ghost" href="#stack">Смотреть стек</a>
+        </div>
+        <div class="hero-meta">
+          <span><strong>v6</strong> SoloBot · Brick</span>
+          <span><strong>OVH</strong> bot / LK / site / wiki</span>
+          <span><strong>Forgejo</strong> forgeo.pvenode.online/Gekon</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="product">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Product surfaces</span>
+          <h2>Что видит пользователь</h2>
+          <p>Публичные точки входа GEKON: ускорение интернета, личный кабинет, бот и инструкции.</p>
+        </div>
+        <div class="product-strip">
+          <a class="product-tile" href="https://gekon.tech" target="_blank" rel="noopener">
+            <div class="kicker">SITE</div>
+            <h3>gekon.tech</h3>
+            <p>Маркетинг, тарифы START / PRO / DIAMOND, воронка в ЛК и приложения Happ + Incy.</p>
+          </a>
+          <a class="product-tile" href="https://lk.gekon.team" target="_blank" rel="noopener">
+            <div class="kicker">CABINET</div>
+            <h3>lk.gekon.team</h3>
+            <p>Solo-Brick: подписка, оплата, устройства. Mini App → t.me/gekon_fast_bot/app.</p>
+          </a>
+          <a class="product-tile" href="https://t.me/gekon_fast_bot" target="_blank" rel="noopener">
+            <div class="kicker">BOT</div>
+            <h3>@gekon_fast_bot</h3>
+            <p>SoloBot v6: онбординг, тарифы, Platega SBP/CARDS/INT/CRYPTO + Stars.</p>
+          </a>
+          <a class="product-tile" href="https://wiki.gekon.team" target="_blank" rel="noopener">
+            <div class="kicker">WIKI</div>
+            <h3>wiki.gekon.team</h3>
+            <p>Гайды подключения и клиенты. Origin на OVH, публичный edge через CDN.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="stack">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Runtime stack</span>
+          <h2>Боевой стек 2026</h2>
+          <p>Prod-канон после cutover на OVH: overlays бота, Brick patches, Sub-Bridge и платежи Platega.</p>
+        </div>
+        <div class="stack-grid">
+          <div class="panel">
+            <div class="stack-list">
+              <article class="stack-item">
+                <div class="stack-tag">BOT</div>
+                <div>
+                  <h3>SoloBot v6</h3>
+                  <p>Overlays через <code>apply-config.sh</code> · vendor pin · без патча vendor. Platega + Stars.</p>
+                  <code>2. PROD/gekon-solobot-PRODSRV-V6/</code>
+                </div>
+              </article>
+              <article class="stack-item">
+                <div class="stack-tag">LK</div>
+                <div>
+                  <h3>Solo-Brick</h3>
+                  <p>ЛК + Mini App. После recreate — patches Happ+Incy, hide-switch, webapp-login.</p>
+                  <code>API_URL → bot.gekon.team</code>
+                </div>
+              </article>
+              <article class="stack-item">
+                <div class="stack-tag">SUB</div>
+                <div>
+                  <h3>Sub-Bridge + /sub</h3>
+                  <p>Выдача подписок, hosts API, subscription page 7.1.8-happ. Не путать с Remnawave.</p>
+                  <code>subb.ydns.eu</code>
+                </div>
+              </article>
+              <article class="stack-item">
+                <div class="stack-tag">PAY</div>
+                <div>
+                  <h3>Platega</h3>
+                  <p>SBP / CARDS / INT / CRYPTO + STARS. <code>PROVIDERS_ENABLED</code> ≡ DB <code>PAYMENTS_CONFIG</code>.</p>
+                  <code>1. MANUAL/platega-io-DOCS/</code>
+                </div>
+              </article>
+              <article class="stack-item">
+                <div class="stack-tag">TG</div>
+                <div>
+                  <h3>WEB + MTProto proxy</h3>
+                  <p>tproxy/Caddy cover, оркестратор failover, боевой mtproto.zig Fake-TLS+WEB.</p>
+                  <code>8 · 9 · 10 tiers</code>
+                </div>
+              </article>
+            </div>
+          </div>
+          <div class="panel flow">
+            <div class="flow-step">
+              <div class="n">01 · ONBOARD</div>
+              <h3>Сайт / бот / Mini App</h3>
+              <p>Регистрация и 3 дня теста. Карта не нужна. Вход в ЛК или Telegram.</p>
+            </div>
+            <div class="flow-step">
+              <div class="n">02 · BILLING</div>
+              <h3>Оплата в ЛК</h3>
+              <p>Platega методы + Stars. Тарифы START / PRO / DIAMOND и докупка устройств.</p>
+            </div>
+            <div class="flow-step">
+              <div class="n">03 · CONNECT</div>
+              <h3>Ссылка подписки</h3>
+              <p>Sub-Bridge отдаёт конфиг. Клиенты Happ и Incy — базовый путь; старшие тарифы шире.</p>
+            </div>
+            <div class="flow-step">
+              <div class="n">04 · SUPPORT</div>
+              <h3>Wiki + helpdesk</h3>
+              <p>wiki.gekon.team · @gekon_helpdesk_bot · helpdesk@gekon.tech</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="arch">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Infrastructure</span>
+          <h2>Как устроен prod</h2>
+          <p>DNS на Cloudflare, продуктовые хосты на OVH, infra-admins на Timeweb, git-канон на Forgejo.</p>
+        </div>
+        <div class="arch">
+          <div class="arch-col">
+            <h3><span class="dot"></span> Product · OVH</h3>
+            <ul>
+              <li><strong>bot.gekon.team</strong> — SoloBot v6 + Postgres + Redis</li>
+              <li><strong>lk.gekon.team</strong> — Solo-Brick compose</li>
+              <li><strong>gekon.tech</strong> — Vite/pm2 suite</li>
+              <li><strong>wiki</strong> — Docusaurus origin + CDN edge</li>
+              <li><strong>Remnawave</strong> — control panel API</li>
+            </ul>
+          </div>
+          <div class="arch-col">
+            <h3><span class="dot cyan"></span> Infra · Timeweb</h3>
+            <ul>
+              <li><strong>Forgejo</strong> — forgeo.pvenode.online/Gekon</li>
+              <li><strong>Semaphore</strong> — Ansible CI</li>
+              <li><strong>Vault + Warpgate</strong> — secrets / bastion</li>
+              <li><strong>Sub-Bridge</strong> — subb.ydns.eu</li>
+              <li>BookStack · Heimdall · Vikunja · Vaultwarden</li>
+            </ul>
+          </div>
+          <div class="arch-col">
+            <h3><span class="dot amber"></span> Edge & storage</h3>
+            <ul>
+              <li><strong>Cloudflare</strong> — DNS zones gekon.team / .tech</li>
+              <li><strong>Yandex CDN</strong> — public wiki edge</li>
+              <li><strong>pvenode</strong> — MinIO / NPM / backups</li>
+              <li><strong>TG proxies</strong> — WEB cover + MTProto zig</li>
+              <li>Host packs + SSH в Server INFRA-ADMIN</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="repos">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Git canon</span>
+          <h2>Репозитории Forgejo</h2>
+          <p>Единственный git-канон — org Gekon. Meta тянет submodules; архив v5 не использовать.</p>
+        </div>
+        <div class="repos">
+          <a class="repo" href="https://forgeo.pvenode.online/Gekon/VPN-gekon-META-CURSOR" target="_blank" rel="noopener">
+            <div class="repo-top">
+              <h3>VPN-gekon-META-CURSOR</h3>
+              <span class="path">meta root</span>
+            </div>
+            <p>Карта проекта, MANUAL, Cursor rules/MCP, host packs, эта страница.</p>
+          </a>
+          <a class="repo" href="https://forgeo.pvenode.online/Gekon/gekon-solobot-PRODSRV-V6" target="_blank" rel="noopener">
+            <div class="repo-top">
+              <h3>gekon-solobot-PRODSRV-V6</h3>
+              <span class="path">2. PROD/…-V6</span>
+            </div>
+            <p>Overlays бота, config/texts/buttons, apply scripts, PRODSRV docs.</p>
+          </a>
+          <a class="repo" href="https://forgeo.pvenode.online/Gekon/GEKON-SUITE-VPN" target="_blank" rel="noopener">
+            <div class="repo-top">
+              <h3>GEKON-SUITE-VPN</h3>
+              <span class="path">suite / site</span>
+            </div>
+            <p>Сайт gekon.tech: React/Vite, воронка /pay /trial /apps.</p>
+          </a>
+          <a class="repo" href="https://forgeo.pvenode.online/Gekon/gekon-SABBRIDGE-PROD" target="_blank" rel="noopener">
+            <div class="repo-top">
+              <h3>gekon-SABBRIDGE-PROD</h3>
+              <span class="path">sub_bridge</span>
+            </div>
+            <p>Sub-Bridge PROD + subscription-page. Ветка master.</p>
+          </a>
+          <a class="repo" href="https://forgeo.pvenode.online/Gekon/WIKI-GEKON" target="_blank" rel="noopener">
+            <div class="repo-top">
+              <h3>WIKI-GEKON</h3>
+              <span class="path">gekon-wiki</span>
+            </div>
+            <p>Публичные гайды wiki.gekon.team на Docusaurus.</p>
+          </a>
+          <a class="repo" href="https://forgeo.pvenode.online/Gekon/infra-admins" target="_blank" rel="noopener">
+            <div class="repo-top">
+              <h3>infra-admins · infra-gekon · pvenode</h3>
+              <span class="path">5. infra-ansimble</span>
+            </div>
+            <p>Ansible, restore playbooks, Proxmox. Semaphore деплой.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="map">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Workspace map</span>
+          <h2>Tier-каталоги meta</h2>
+          <p>Локальная структура VPN-gekon — куда идти агенту и человеку.</p>
+        </div>
+        <div class="tiers">
+          <div class="tier">
+            <div class="tier-id">01</div>
+            <div>
+              <h3>MANUAL</h3>
+              <p>Agent-KB SoloBot / Solo-Brick, Platega docs, SYNC_CHECKLIST, chat starters.</p>
+            </div>
+            <div class="hint">1. MANUAL/</div>
+          </div>
+          <div class="tier">
+            <div class="tier-id">02</div>
+            <div>
+              <h3>PROD</h3>
+              <p>Бот v6, suite, wiki, Sub-Bridge — актуальный боевой код.</p>
+            </div>
+            <div class="hint">2. PROD/</div>
+          </div>
+          <div class="tier">
+            <div class="tier-id">03–04</div>
+            <div>
+              <h3>Design · Brick backup</h3>
+              <p>Экспорты UI бота и снимки site-config Solo-Brick.</p>
+            </div>
+            <div class="hint">3 · 4</div>
+          </div>
+          <div class="tier">
+            <div class="tier-id">05</div>
+            <div>
+              <h3>Infra Ansible</h3>
+              <p>infra-admins, infra-gekon, pvenode — restore и автоматизация.</p>
+            </div>
+            <div class="hint">5. infra-ansimble/</div>
+          </div>
+          <div class="tier">
+            <div class="tier-id">06–07</div>
+            <div>
+              <h3>CDN scripts</h3>
+              <p>Скрипты CDN v1 (allx0) и v2 (buy).</p>
+            </div>
+            <div class="hint">6 · 7</div>
+          </div>
+          <div class="tier">
+            <div class="tier-id">08–10</div>
+            <div>
+              <h3>TG proxy stack</h3>
+              <p>WEB Proxy, оркестратор MTProto failover, боевой mtproto.zig.</p>
+            </div>
+            <div class="hint">8 · 9 · 10</div>
+          </div>
+          <div class="tier">
+            <div class="tier-id">SRV</div>
+            <div>
+              <h3>Server INFRA-ADMIN</h3>
+              <p>Host packs OVH/Timeweb, SSH keys, INFRA_MAP — offline ops packs.</p>
+            </div>
+            <div class="hint">Server INFRA-ADMIN/</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Quick links</span>
+          <h2>Стартовые точки</h2>
+          <p>Публичные сервисы и канонические входы в документацию.</p>
+        </div>
+        <div class="links-row">
+          <a class="link-chip" href="https://gekon.tech" target="_blank" rel="noopener">
+            <span>PRODUCT</span>
+            <strong>Сайт</strong>
+            <em>gekon.tech</em>
+          </a>
+          <a class="link-chip" href="https://lk.gekon.team" target="_blank" rel="noopener">
+            <span>CABINET</span>
+            <strong>Личный кабинет</strong>
+            <em>lk.gekon.team</em>
+          </a>
+          <a class="link-chip" href="https://wiki.gekon.team" target="_blank" rel="noopener">
+            <span>DOCS</span>
+            <strong>Wiki</strong>
+            <em>wiki.gekon.team</em>
+          </a>
+          <a class="link-chip" href="https://t.me/gekon_fast_bot" target="_blank" rel="noopener">
+            <span>TELEGRAM</span>
+            <strong>Бот</strong>
+            <em>@gekon_fast_bot</em>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <div class="footer-brand">
+        <img src="assets/gekon-logo.svg" alt="" width="28" height="28" />
+        <span>GEKON · VPN-gekon meta</span>
+      </div>
+      <div>Канон: Forgejo Gekon · стек SoloBot v6 + Solo-Brick · OVH cutover 2026-09</div>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById("nav");
+    const onScroll = () => nav.classList.toggle("scrolled", window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  </script>
+</body>
+</html>
