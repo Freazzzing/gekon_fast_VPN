@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="GEKON hero preview">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#020617" />
+      <stop offset="100%" stop-color="#0a0f1f" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <circle cx="240" cy="120" r="200" fill="#10b981" fill-opacity="0.12" />
+  <circle cx="1000" cy="520" r="240" fill="#06b6d4" fill-opacity="0.12" />
+  <rect x="110" y="140" width="160" height="160" rx="36" fill="#0f172a" stroke="url(#accent)" stroke-width="8" />
+  <path d="M155 220c0-24 19-43 43-43h24v16h-24c-15 0-27 12-27 27s12 27 27 27h24v16h-24c-24 0-43-19-43-43z" fill="url(#accent)" />
+  <circle cx="228" cy="220" r="12" fill="#10b981" />
+  <text x="300" y="230" fill="#e2e8f0" font-family="Inter,Arial,sans-serif" font-size="88" font-weight="700">GEKON</text>
+  <text x="300" y="300" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="36">Internet Speed Boost</text>
+</svg>

@@ -1,32 +1,42 @@
-# GEKON — GitHub Pages
+<p align="center">
+  <img src="assets/gekon-hero-logo.svg" alt="GEKON" width="320" />
+</p>
 
-Статическая обзорная страница meta-репозитория VPN-gekon.
+<h1 align="center">GEKON</h1>
 
-## Локально
+<p align="center">
+  Надёжный ускоритель интернета — стабильнее маршруты, меньше лагов, работа 24/7.
+</p>
 
-```bash
-open docs/index.html
-# или
-python3 -m http.server -d docs 8080
-```
+<p align="center">
+  <a href="https://gekon.tech">gekon.tech</a> ·
+  <a href="https://lk.gekon.team">Личный кабинет</a> ·
+  <a href="https://wiki.gekon.team">Wiki</a> ·
+  <a href="https://t.me/gekon_fast_bot">Telegram-бот</a>
+</p>
 
-## GitHub Pages
+<p align="center">
+  <a href="https://freazzzing.github.io/gekon_fast_VPN/"><strong>→ Открыть лендинг проекта</strong></a>
+</p>
 
-Settings → Pages → Source: **Deploy from a branch** → Branch: `main` → Folder: **/docs**.
+---
 
-URL: `https://<user>.github.io/<repo>/`
+## Быстрый старт
 
-## Forgejo Pages
+1. Зайди на [gekon.tech](https://gekon.tech) или в бота [@gekon_fast_bot](https://t.me/gekon_fast_bot)
+2. Активируй тест / оформи подписку в [ЛК](https://lk.gekon.team)
+3. Добавь ссылку подписки в **Happ** или **Incy**
 
-Если Pages включены на Forgejo — укажите root `docs/` (или скопируйте `docs/index.html` в ветку `pages` по политике инстанса).
+## Ссылки
 
-## Состав
+| | |
+|---|---|
+| Сайт | https://gekon.tech |
+| ЛК | https://lk.gekon.team |
+| Wiki | https://wiki.gekon.team |
+| Бот | https://t.me/gekon_fast_bot |
+| Лендинг (GitHub Pages) | https://freazzzing.github.io/gekon_fast_VPN/ |
 
-| Файл | Назначение |
-|------|------------|
-| `index.html` | Лендинг: продукт, стек, infra, репозитории, tier-карта |
-| `assets/gekon-logo.svg` | Марка G |
-| `assets/gekon-hero-logo.svg` | Wordmark для hero |
-| `assets/favicon.svg` | Favicon |
+## О репозитории
 
-Бренд и палитра синхронизированы с [gekon.tech](https://gekon.tech) (тёмный фон, mint/cyan).
+Публичная витрина продукта GEKON. Исходники лендинга: `index.html` + `assets/`.
