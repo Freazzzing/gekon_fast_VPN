@@ -16,31 +16,16 @@
 </p>
 
 <p align="center">
-  <a href="https://freazzzing.github.io/gekon_fast_VPN/"><img src="https://img.shields.io/badge/✨_HTML_лендинг-открыть_страницу-2fd6a1?style=for-the-badge&labelColor=111827" alt="HTML лендинг" /></a>
+  <a href="https://freazzzing.github.io/gekon_fast_VPN/"><img src="https://img.shields.io/badge/✨_Открыть_страницу-HTML_лендинг-2fd6a1?style=for-the-badge&labelColor=111827" alt="HTML лендинг" /></a>
 </p>
-
----
-
-## Почему GEKON
-
-| | | |
-|:---:|:---:|:---:|
-| **3 дня** теста | **99.9%** uptime | **Happ + Incy** |
-| без карты | стабильный канал | простые клиенты |
-
-- Меньше буферизации и обрывов на перегруженных маршрутах  
-- Одна ссылка подписки — подключил и пользуешься  
-- Тарифы START / PRO / DIAMOND под разное число устройств  
 
 ---
 
 ## Быстрый старт
 
-```text
-1. gekon.tech  или  @gekon_fast_bot
-2. ЛК → тест / оплата
-3. Happ или Incy → вставить ссылку подписки
-```
+1. Зайди на [gekon.tech](https://gekon.tech) или в бота [@gekon_fast_bot](https://t.me/gekon_fast_bot)
+2. Активируй 3 дня теста / оформи подписку в [личном кабинете](https://lk.gekon.team)
+3. Добавь ссылку подписки в **Happ** или **Incy**
 
 <p align="center">
   <a href="https://gekon.tech/trial"><img src="https://img.shields.io/badge/Получить_3_дня-бесплатно-2fd6a1?style=for-the-badge&labelColor=0a0f1f" alt="3 дня" /></a>
@@ -52,28 +37,17 @@
 
 ## Ссылки
 
-| Сервис | URL |
-|--------|-----|
+| | |
+|---|---|
 | Сайт | https://gekon.tech |
 | Личный кабинет | https://lk.gekon.team |
-| Wiki / гайды | https://wiki.gekon.team |
+| Wiki | https://wiki.gekon.team |
 | Telegram-бот | https://t.me/gekon_fast_bot |
-| **Красивая HTML-страница** | https://freazzzing.github.io/gekon_fast_VPN/ |
-
-> **Важно:** страница репозитория на GitHub всегда показывает этот README (Markdown).  
-> Полноценный HTML-лендинг открывается только по ссылке GitHub Pages выше.
+| Поддержка | helpdesk@gekon.tech · [@gekon_helpdesk_bot](https://t.me/gekon_helpdesk_bot) |
+| HTML-страница | https://freazzzing.github.io/gekon_fast_VPN/ |
 
 ---
 
-## Что в репозитории
-
-```text
-gekon_fast_VPN/
-├── index.html     ← лендинг (GitHub Pages)
-├── assets/        ← логотипы GEKON
-└── README.md      ← эта витрина на github.com
-```
-
 <p align="center">
-  <sub>GEKON · <a href="https://gekon.tech">gekon.tech</a> · не сливает данные · работает 24/7</sub>
+  <sub>GEKON · надёжный ускоритель интернета · не сливает данные · работает 24/7</sub>
 </p>
